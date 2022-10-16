@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/masa-iwasaki/esalike/issues"
   },
-  "homepage": "https://github.com/masa-iwasaki/esalike#readme"
+  "homepage": "https://github.com/masa-iwasaki/esalike#readme",
+  "dependencies": {
+    "jquery": "^3.6.1",
+    "jquery.selection": "^0.1.2"
+  }
 }
