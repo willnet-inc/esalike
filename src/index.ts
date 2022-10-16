@@ -1,3 +1,5 @@
+/// <reference path="./types/jquery.selection.d.ts"/>
+
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -5,24 +7,26 @@
  * DS209: Avoid top-level return
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-let $;
-global.jQuery = ($ = require('jquery'));
-require('jquery.selection/src/jquery.selection.js');
 
-if (location.host.match(/qiita\.com|esa\.io|docbase\.io|pplog\.net|lvh\.me|slack\.com|mimemo\.io|kibe\.la|hackmd\.io/)) { return; }
+import $ from 'jquery'
 
-let suggesting = null;
-$(document).on('keyup', 'textarea', function (e) {
-  if (location.host.match(/github\.com/)) {
-    suggesting = !!$('ul.suggestions:visible').length;
-  } else if (location.host.match(/idobata\.io/)) {
-    suggesting = !!$('.atwho-view:visible').length;
-  }
-});
+// KeyDownHandlerのオリジナル
+//
+// $(document).on('keydown', 'textarea', function (e: JQuery.KeyDownEvent) {
+//   switch (e.which || e.keyCode) {
+//     case 9:
+//       handleTabKey(e);
+//       break;
+//     case 13:
+//       handleEnterKey(e);
+//       break;
+//     case 32:
+//       handleSpaceKey(e);
+//       break;
+//   }
+// });
 
-$(document).on('keydown', 'textarea', function (e) {
-  if (suggesting) { return; }
-
+export const KeyDownHandler = function (this: HTMLTextAreaElement, e: KeyboardEvent): any {
   switch (e.which || e.keyCode) {
     case 9:
       handleTabKey(e);
@@ -34,30 +38,35 @@ $(document).on('keydown', 'textarea', function (e) {
       handleSpaceKey(e);
       break;
   }
-});
+};
 
-var handleTabKey = function (e) {
+const handleTabKey = function (e: KeyboardEvent) {
+  if (e.target === null) return;
+
+  const target = e.target as HTMLTextAreaElement
+
   let newPos;
   e.preventDefault();
+
   const currentLine = getCurrentLine(e);
-  const text = $(e.target).val();
-  const pos = $(e.target).selection('getPos');
-  if (currentLine) { $(e.target).selection('setPos', { start: currentLine.start, end: currentLine.end }); }
+  const text = $(target).val() as string;
+  const pos = $(target).selection('getPos');
+  if (currentLine) { $(target).selection('setPos', { start: currentLine.start, end: currentLine.end }); }
   if (e.shiftKey) {
     if (currentLine && (currentLine.text.charAt(0) === '|')) {
       // prev cell in table
       newPos = text.lastIndexOf('|', pos.start - 1);
       if (newPos > 1) { newPos -= 1; }
-      $(e.target).selection('setPos', { start: newPos, end: newPos });
+      $(target).selection('setPos', { start: newPos, end: newPos });
     } else {
       // re indent
-      const reindentedText = $(e.target).selection().replace(/^ {1,4}/gm, '');
-      const reindentedCount = $(e.target).selection().length - reindentedText.length;
-      replaceText(e.target, reindentedText);
+      const reindentedText = $(target).selection().replace(/^ {1,4}/gm, '');
+      const reindentedCount = $(target).selection().length - reindentedText.length;
+      replaceText(target, reindentedText);
       if (currentLine) {
-        $(e.target).selection('setPos', { start: pos.start - reindentedCount, end: pos.start - reindentedCount });
+        $(target).selection('setPos', { start: pos.start - reindentedCount, end: pos.start - reindentedCount });
       } else {
-        $(e.target).selection('setPos', { start: pos.start, end: pos.start + reindentedText.length });
+        $(target).selection('setPos', { start: pos.start, end: pos.start + reindentedText.length });
       }
     }
 
@@ -66,25 +75,29 @@ var handleTabKey = function (e) {
       // next cell in table
       newPos = text.indexOf('|', pos.start + 1);
       if ((newPos < 0) || (newPos === text.lastIndexOf('|', currentLine.end - 1))) {
-        $(e.target).selection('setPos', { start: currentLine.end, end: currentLine.end });
+        $(target).selection('setPos', { start: currentLine.end, end: currentLine.end });
       } else {
-        $(e.target).selection('setPos', { start: newPos + 2, end: newPos + 2 });
+        $(target).selection('setPos', { start: newPos + 2, end: newPos + 2 });
       }
     } else {
       // indent
-      const indentedText = '    ' + $(e.target).selection().split("\n").join("\n    ");
-      replaceText(e.target, indentedText);
+      const indentedText = '    ' + $(target).selection().split("\n").join("\n    ");
+      replaceText(target, indentedText);
       if (currentLine) {
-        $(e.target).selection('setPos', { start: pos.start + 4, end: pos.start + 4 });
+        $(target).selection('setPos', { start: pos.start + 4, end: pos.start + 4 });
       } else {
-        $(e.target).selection('setPos', { start: pos.start, end: pos.start + indentedText.length });
+        $(target).selection('setPos', { start: pos.start, end: pos.start + indentedText.length });
       }
     }
   }
-  return $(e.target).trigger('input');
+  return $(target).trigger('input');
 };
 
-var handleEnterKey = function (e) {
+const handleEnterKey = function (e: KeyboardEvent) {
+  if (e.target === null) return;
+
+  const target = e.target as HTMLTextAreaElement
+
   let currentLine, match;
   if (e.metaKey || e.ctrlKey || e.shiftKey) { return; } // for cmd + enter
   if (!(currentLine = getCurrentLine(e))) { return; }
@@ -94,7 +107,7 @@ var handleEnterKey = function (e) {
     let listMarkMatch;
     if (currentLine.text.match(/^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] ))\s*$/)) {
       // empty task list
-      $(e.target).selection('setPos', { start: currentLine.start, end: (currentLine.end - 1) });
+      $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end - 1) });
       return;
     }
     e.preventDefault();
@@ -104,35 +117,42 @@ var handleEnterKey = function (e) {
       const num = parseInt(listMarkMatch[2]);
       if (num !== 1) { listMark = listMark.replace(/\s*\d+/, `${indent}${num + 1}`); }
     }
-    replaceText(e.target, "\n" + listMark);
+    replaceText(target, "\n" + listMark);
     const caretTo = currentLine.caret + listMark.length + 1;
-    $(e.target).selection('setPos', { start: caretTo, end: caretTo });
+    $(target).selection('setPos', { start: caretTo, end: caretTo });
   } else if (currentLine.text.match(/^(\s*(?:-|\+|\*|\d+\.) )/)) {
     // remove list
-    $(e.target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
+    $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
   } else if (currentLine.text.match(/^.*\|\s*$/)) {
     // new row for table
     if (currentLine.text.match(/^[\|\s]+$/)) {
-      $(e.target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
+      $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
       return;
     }
     if (!currentLine.endOfLine) { return; }
     e.preventDefault();
-    const row = [];
-    for (match of Array.from(currentLine.text.match(/\|/g))) { row.push("|"); }
+    const row: string[] = [];
+    const m = currentLine.text.match(/\|/g)
+    if (m === null) { return; }
+
+    for (match of Array.from(m)) { row.push("|"); }
     const prevLine = getPrevLine(e);
     if (!prevLine || (!currentLine.text.match(/---/) && !prevLine.text.match(/\|/g))) {
-      replaceText(e.target, "\n" + row.join(' --- ') + "\n" + row.join('  '));
-      $(e.target).selection('setPos', { start: (currentLine.caret + (6 * row.length)) - 1, end: (currentLine.caret + (6 * row.length)) - 1 });
+      replaceText(target, "\n" + row.join(' --- ') + "\n" + row.join('  '));
+      $(target).selection('setPos', { start: (currentLine.caret + (6 * row.length)) - 1, end: (currentLine.caret + (6 * row.length)) - 1 });
     } else {
-      replaceText(e.target, "\n" + row.join('  '));
-      $(e.target).selection('setPos', { start: currentLine.caret + 3, end: currentLine.caret + 3 });
+      replaceText(target, "\n" + row.join('  '));
+      $(target).selection('setPos', { start: currentLine.caret + 3, end: currentLine.caret + 3 });
     }
   }
-  return $(e.target).trigger('input');
+  return $(target).trigger('input');
 };
 
-var handleSpaceKey = function (e) {
+var handleSpaceKey = function (e: KeyboardEvent) {
+  if (e.target === null) return;
+
+  const target = e.target as HTMLTextAreaElement
+
   let currentLine, match;
   if (!e.shiftKey || !e.altKey) { return; }
   if (!(currentLine = getCurrentLine(e))) { return; }
@@ -140,16 +160,20 @@ var handleSpaceKey = function (e) {
     e.preventDefault();
     const checkMark = match[3] === ' ' ? 'x' : ' ';
     const replaceTo = `${match[1]}${match[2]} [${checkMark}] ${match[4]}`;
-    $(e.target).selection('setPos', { start: currentLine.start, end: currentLine.end });
-    replaceText(e.target, replaceTo);
-    $(e.target).selection('setPos', { start: currentLine.caret, end: currentLine.caret });
-    return $(e.target).trigger('input');
+    $(target).selection('setPos', { start: currentLine.start, end: currentLine.end });
+    replaceText(target, replaceTo);
+    $(target).selection('setPos', { start: currentLine.caret, end: currentLine.caret });
+    return $(target).trigger('input');
   }
 };
 
-var getCurrentLine = function (e) {
-  const text = $(e.target).val();
-  const pos = $(e.target).selection('getPos');
+const getCurrentLine = function (e: KeyboardEvent) {
+  if (e.target === null) return;
+
+  const target = e.target as HTMLTextAreaElement
+
+  const text = $(target).val() as string;
+  const pos = $(target).selection('getPos');
 
   if (!text) { return null; }
   if (pos.start !== pos.end) { return null; }
@@ -166,9 +190,16 @@ var getCurrentLine = function (e) {
   };
 };
 
-var getPrevLine = function (e) {
+var getPrevLine = function (e: KeyboardEvent) {
+    if (e.target === null) return;
+
+  const target = e.target as HTMLTextAreaElement
+
   const currentLine = getCurrentLine(e);
-  const text = $(e.target).val().slice(0, currentLine.start);
+
+  if (currentLine === null || typeof currentLine === 'undefined') { return null; }
+
+  const text = ($(target).val() as string).slice(0, currentLine.start);
 
   const startPos = text.lastIndexOf("\n", currentLine.start - 2) + 1;
   const endPos = currentLine.start;
@@ -180,7 +211,7 @@ var getPrevLine = function (e) {
 };
 
 // @see https://mimemo.io/m/mqLXOlJe7ozQ19r
-var replaceText = function (target, str) {
+const replaceText = function (target: HTMLTextAreaElement, str: string) {
   let e;
   const pos = $(target).selection('getPos');
   const fromIdx = pos.start;
