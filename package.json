@@ -1,0 +1,23 @@
+{
+  "name": "esalike",
+  "version": "0.0.1",
+  "description": "An esalike markdown support implemented as a NPM package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/masa-iwasaki/esalike.git"
+  },
+  "keywords": [
+    "esarea",
+    "markdown"
+  ],
+  "author": "Masatoshi Iwasaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/masa-iwasaki/esalike/issues"
+  },
+  "homepage": "https://github.com/masa-iwasaki/esalike#readme"
+}
