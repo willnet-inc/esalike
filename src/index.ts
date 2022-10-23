@@ -1,3 +1,4 @@
+/// <reference path="./types/global.d.ts"/>
 /// <reference path="./types/jquery.selection.d.ts"/>
 
 /*
@@ -8,7 +9,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-import $ from 'jquery'
+// import * as jQuery from 'jquery'
+
+import jQuery = require('jquery');
+const $ = jQuery
+import selection from './jquery.selection';
+
+selection(jQuery, window, window.document)
 
 // KeyDownHandlerのオリジナル
 //
