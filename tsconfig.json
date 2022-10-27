@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "sourceMap": true
   },
-  "include": ["src", "src/types"],
-  "exclude": ["node_modules", "**/__tests__/*"]
+  "include": ["src", "src/types", "tmp/jquery.selection.ts"],
+  "exclude": ["node_modules", "**/__tests__/*", "tmp"]
 }

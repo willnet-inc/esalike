@@ -1,5 +1,4 @@
-/// <reference path="./types/global.d.ts"/>
-/// <reference path="./types/jquery.selection.d.ts"/>
+import { CaretOperation } from "./caret_operation";
 
 /*
  * decaffeinate suggestions:
@@ -8,30 +7,6 @@
  * DS209: Avoid top-level return
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-
-// import * as jQuery from 'jquery'
-
-import jQuery = require('jquery');
-const $ = jQuery
-import selection from './jquery.selection';
-
-selection(jQuery, window, window.document)
-
-// KeyDownHandlerのオリジナル
-//
-// $(document).on('keydown', 'textarea', function (e: JQuery.KeyDownEvent) {
-//   switch (e.which || e.keyCode) {
-//     case 9:
-//       handleTabKey(e);
-//       break;
-//     case 13:
-//       handleEnterKey(e);
-//       break;
-//     case 32:
-//       handleSpaceKey(e);
-//       break;
-//   }
-// });
 
 export const KeyDownHandler = function (this: HTMLTextAreaElement, e: KeyboardEvent): any {
   switch (e.which || e.keyCode) {
@@ -56,24 +31,31 @@ const handleTabKey = function (e: KeyboardEvent) {
   e.preventDefault();
 
   const currentLine = getCurrentLine(e);
-  const text = $(target).val() as string;
-  const pos = $(target).selection('getPos');
-  if (currentLine) { $(target).selection('setPos', { start: currentLine.start, end: currentLine.end }); }
+  const text = target.value
+  const pos = CaretOperation.getPos(target)
+
+  if (currentLine) {
+    CaretOperation.setPos(target, { start: currentLine.start, end: currentLine.end });
+  }
+
   if (e.shiftKey) {
     if (currentLine && (currentLine.text.charAt(0) === '|')) {
       // prev cell in table
       newPos = text.lastIndexOf('|', pos.start - 1);
       if (newPos > 1) { newPos -= 1; }
-      $(target).selection('setPos', { start: newPos, end: newPos });
+      CaretOperation.setPos(target, { start: newPos, end: newPos })
     } else {
       // re indent
-      const reindentedText = $(target).selection().replace(/^ {1,4}/gm, '');
-      const reindentedCount = $(target).selection().length - reindentedText.length;
+      const currentText = CaretOperation.getText(target)
+      const reindentedText = currentText.replace(/^ {1,4}/gm, '');
+      const reindentedCount = currentText.length - reindentedText.length;
+
       replaceText(target, reindentedText);
+
       if (currentLine) {
-        $(target).selection('setPos', { start: pos.start - reindentedCount, end: pos.start - reindentedCount });
+        CaretOperation.setPos(target, { start: pos.start - reindentedCount, end: pos.start - reindentedCount });
       } else {
-        $(target).selection('setPos', { start: pos.start, end: pos.start + reindentedText.length });
+        CaretOperation.setPos(target, { start: pos.start, end: pos.start + reindentedText.length });
       }
     }
 
@@ -82,22 +64,22 @@ const handleTabKey = function (e: KeyboardEvent) {
       // next cell in table
       newPos = text.indexOf('|', pos.start + 1);
       if ((newPos < 0) || (newPos === text.lastIndexOf('|', currentLine.end - 1))) {
-        $(target).selection('setPos', { start: currentLine.end, end: currentLine.end });
+        CaretOperation.setPos(target, { start: currentLine.end, end: currentLine.end })
       } else {
-        $(target).selection('setPos', { start: newPos + 2, end: newPos + 2 });
+        CaretOperation.setPos(target, { start: newPos + 2, end: newPos + 2 });
       }
     } else {
       // indent
-      const indentedText = '    ' + $(target).selection().split("\n").join("\n    ");
+      const indentedText = '    ' + CaretOperation.getText(target).split("\n").join("\n    ");
       replaceText(target, indentedText);
       if (currentLine) {
-        $(target).selection('setPos', { start: pos.start + 4, end: pos.start + 4 });
+        CaretOperation.setPos(target, { start: pos.start + 4, end: pos.start + 4 });
       } else {
-        $(target).selection('setPos', { start: pos.start, end: pos.start + indentedText.length });
+        CaretOperation.setPos(target, { start: pos.start, end: pos.start + indentedText.length });
       }
     }
   }
-  return $(target).trigger('input');
+  document.dispatchEvent(new Event("input"));
 };
 
 const handleEnterKey = function (e: KeyboardEvent) {
@@ -114,7 +96,7 @@ const handleEnterKey = function (e: KeyboardEvent) {
     let listMarkMatch;
     if (currentLine.text.match(/^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] ))\s*$/)) {
       // empty task list
-      $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end - 1) });
+      CaretOperation.setPos(target, { start: currentLine.start, end: (currentLine.end - 1) });
       return;
     }
     e.preventDefault();
@@ -126,14 +108,14 @@ const handleEnterKey = function (e: KeyboardEvent) {
     }
     replaceText(target, "\n" + listMark);
     const caretTo = currentLine.caret + listMark.length + 1;
-    $(target).selection('setPos', { start: caretTo, end: caretTo });
+    CaretOperation.setPos(target, { start: caretTo, end: caretTo });
   } else if (currentLine.text.match(/^(\s*(?:-|\+|\*|\d+\.) )/)) {
     // remove list
-    $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
+    CaretOperation.setPos(target, { start: currentLine.start, end: (currentLine.end) });
   } else if (currentLine.text.match(/^.*\|\s*$/)) {
     // new row for table
     if (currentLine.text.match(/^[\|\s]+$/)) {
-      $(target).selection('setPos', { start: currentLine.start, end: (currentLine.end) });
+      CaretOperation.setPos(target, { start: currentLine.start, end: (currentLine.end) });
       return;
     }
     if (!currentLine.endOfLine) { return; }
@@ -146,13 +128,13 @@ const handleEnterKey = function (e: KeyboardEvent) {
     const prevLine = getPrevLine(e);
     if (!prevLine || (!currentLine.text.match(/---/) && !prevLine.text.match(/\|/g))) {
       replaceText(target, "\n" + row.join(' --- ') + "\n" + row.join('  '));
-      $(target).selection('setPos', { start: (currentLine.caret + (6 * row.length)) - 1, end: (currentLine.caret + (6 * row.length)) - 1 });
+      CaretOperation.setPos(target, { start: (currentLine.caret + (6 * row.length)) - 1, end: (currentLine.caret + (6 * row.length)) - 1 });
     } else {
       replaceText(target, "\n" + row.join('  '));
-      $(target).selection('setPos', { start: currentLine.caret + 3, end: currentLine.caret + 3 });
+      CaretOperation.setPos(target, { start: currentLine.caret + 3, end: currentLine.caret + 3 });
     }
   }
-  return $(target).trigger('input');
+  document.dispatchEvent(new Event("input"));
 };
 
 var handleSpaceKey = function (e: KeyboardEvent) {
@@ -167,10 +149,10 @@ var handleSpaceKey = function (e: KeyboardEvent) {
     e.preventDefault();
     const checkMark = match[3] === ' ' ? 'x' : ' ';
     const replaceTo = `${match[1]}${match[2]} [${checkMark}] ${match[4]}`;
-    $(target).selection('setPos', { start: currentLine.start, end: currentLine.end });
+    CaretOperation.setPos(target, { start: currentLine.start, end: currentLine.end });
     replaceText(target, replaceTo);
-    $(target).selection('setPos', { start: currentLine.caret, end: currentLine.caret });
-    return $(target).trigger('input');
+    CaretOperation.setPos(target, { start: currentLine.caret, end: currentLine.caret });
+    document.dispatchEvent(new Event("input"));
   }
 };
 
@@ -178,9 +160,8 @@ const getCurrentLine = function (e: KeyboardEvent) {
   if (e.target === null) return;
 
   const target = e.target as HTMLTextAreaElement
-
-  const text = $(target).val() as string;
-  const pos = $(target).selection('getPos');
+  const text = target.value
+  const pos = CaretOperation.getPos(target)
 
   if (!text) { return null; }
   if (pos.start !== pos.end) { return null; }
@@ -193,7 +174,7 @@ const getCurrentLine = function (e: KeyboardEvent) {
     start: startPos,
     end: endPos,
     caret: pos.start,
-    endOfLine: !$.trim(text.slice(pos.start, endPos))
+    endOfLine: !text.slice(pos.start, endPos).trim()
   };
 };
 
@@ -206,7 +187,7 @@ var getPrevLine = function (e: KeyboardEvent) {
 
   if (currentLine === null || typeof currentLine === 'undefined') { return null; }
 
-  const text = ($(target).val() as string).slice(0, currentLine.start);
+  const text = target.value.slice(0, currentLine.start);
 
   const startPos = text.lastIndexOf("\n", currentLine.start - 2) + 1;
   const endPos = currentLine.start;
@@ -219,8 +200,8 @@ var getPrevLine = function (e: KeyboardEvent) {
 
 // @see https://mimemo.io/m/mqLXOlJe7ozQ19r
 const replaceText = function (target: HTMLTextAreaElement, str: string) {
-  let e;
-  const pos = $(target).selection('getPos');
+  let e: unknown;
+  const pos = CaretOperation.getPos(target)
   const fromIdx = pos.start;
   const toIdx = pos.end;
   let inserted = false;
@@ -230,16 +211,19 @@ const replaceText = function (target: HTMLTextAreaElement, str: string) {
     target.focus();
     target.selectionStart = fromIdx;
     target.selectionEnd = toIdx;
-    try {
-      inserted = document.execCommand('insertText', false, str);
-    } catch (error) {
-      e = error;
-      inserted = false;
-    }
-    if (inserted && ((target.value.length !== expectedLen) || (target.value.substr(fromIdx, str.length) !== str))) {
-      //firefoxでなぜかうまくいってないくせにinsertedがtrueになるので失敗を検知してfalseに…
-      inserted = false;
-    }
+    // NOTE: Without this `return`, new empty list item is highlighted.
+    return
+
+    // try {
+    //   // inserted = document.execCommand('insertText', false, str);
+    // } catch (error) {
+    //   e = error;
+    //   inserted = false;
+    // }
+    // if (inserted && ((target.value.length !== expectedLen) || (target.value.substr(fromIdx, str.length) !== str))) {
+    //   //firefoxでなぜかうまくいってないくせにinsertedがtrueになるので失敗を検知してfalseに…
+    //   inserted = false;
+    // }
   }
   if (!inserted) {
     try {
@@ -253,5 +237,6 @@ const replaceText = function (target: HTMLTextAreaElement, str: string) {
       document.execCommand('ms-endUndoUnit');
     } catch (error2) { e = error2; }
   }
-  $(target).trigger('blur').trigger('focus');
+  target.dispatchEvent(new Event("blur"));
+  target.dispatchEvent(new Event("focus"));
 };
