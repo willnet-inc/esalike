@@ -26,12 +26,7 @@
     "url": "https://github.com/masa-iwasaki/esalike/issues"
   },
   "homepage": "https://github.com/masa-iwasaki/esalike#readme",
-  "dependencies": {
-    "jquery": "^3.6.1",
-    "jquery.selection": "https://github.com/fukayatsu/jquery.selection"
-  },
   "devDependencies": {
-    "@types/jquery": "^3.5.14",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "eslint": "^8.27.0",
