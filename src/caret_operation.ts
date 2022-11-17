@@ -9,7 +9,7 @@ type SelectionRange = {
 type Caret = 'keep' | 'start' | 'end'
 
 const getCaretInfo = function (element: HTMLTextAreaElement) {
-    var res = {
+    const res = {
         text: '',
         start: 0,
         end: 0,
