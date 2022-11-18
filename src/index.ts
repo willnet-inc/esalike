@@ -290,26 +290,32 @@ const replaceText = function (target: HTMLTextAreaElement, str: string) {
     const pos = CaretOperation.getPos(target)
     const fromIdx = pos.start
     const toIdx = pos.end
-    const inserted = false
+    let inserted = false
 
     if (str) {
-        // const expectedLen =
-        //     target.value.length - Math.abs(toIdx - fromIdx) + str.length
+        const expectedLen =
+            target.value.length - Math.abs(toIdx - fromIdx) + str.length
         target.focus()
         target.selectionStart = fromIdx
         target.selectionEnd = toIdx
 
         // NOTE: Without this `return`, new empty list item is highlighted.
-        return
+        // return
 
-        // if (
-        //     inserted &&
-        //     (target.value.length !== expectedLen ||
-        //         target.value.substr(fromIdx, str.length) !== str)
-        // ) {
-        //     //firefoxでなぜかうまくいってないくせにinsertedがtrueになるので失敗を検知してfalseに…
-        //     inserted = false
-        // }
+        try {
+            inserted = document.execCommand('insertText', false, str)
+        } catch (_e) {
+            inserted = false
+        }
+
+        if (
+            inserted &&
+            (target.value.length !== expectedLen ||
+                target.value.substr(fromIdx, str.length) !== str)
+        ) {
+            //firefoxでなぜかうまくいってないくせにinsertedがtrueになるので失敗を検知してfalseに…
+            inserted = false
+        }
     }
     if (!inserted) {
         const { value } = target
