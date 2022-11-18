@@ -104,6 +104,13 @@ const handleTabKey = function (e: KeyboardEvent) {
     document.dispatchEvent(new Event('input'))
 }
 
+const RegExpList = {
+    listMarker: /^(\s*(?:-|\+|\*|\d+\.) )/,
+    listMarkerWithPossibleCheckbox:
+        /^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] )?)\s*\S/,
+    emptyListItem: /^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] ))\s*$/,
+} as const
+
 const handleEnterKey = function (e: KeyboardEvent) {
     if (e.target === null) return
 
@@ -121,16 +128,12 @@ const handleEnterKey = function (e: KeyboardEvent) {
     }
     if (
         (match = currentLine.text.match(
-            /^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] )?)\s*\S/
+            RegExpList.listMarkerWithPossibleCheckbox
         ))
     ) {
         // smart indent with list
         let listMarkMatch
-        if (
-            currentLine.text.match(
-                /^(\s*(?:-|\+|\*|\d+\.) (?:\[(?:x| )\] ))\s*$/
-            )
-        ) {
+        if (currentLine.text.match(RegExpList.emptyListItem)) {
             // empty task list
             CaretOperation.setPos(target, {
                 start: currentLine.start,
@@ -150,7 +153,7 @@ const handleEnterKey = function (e: KeyboardEvent) {
         replaceText(target, '\n' + listMark)
         const caretTo = currentLine.caret + listMark.length + 1
         CaretOperation.setPos(target, { start: caretTo, end: caretTo })
-    } else if (currentLine.text.match(/^(\s*(?:-|\+|\*|\d+\.) )/)) {
+    } else if (currentLine.text.match(RegExpList.listMarker)) {
         // remove list
         CaretOperation.setPos(target, {
             start: currentLine.start,
