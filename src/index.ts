@@ -22,7 +22,8 @@ const handleTabKey = function (e: KeyboardEvent) {
 
     const target = e.target as HTMLTextAreaElement
 
-    let newPos
+    let newPos: number
+
     e.preventDefault()
 
     const currentLine = getCurrentLine(e)
