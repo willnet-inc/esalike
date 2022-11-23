@@ -2,11 +2,12 @@
 
 An [esa.io](https://esa.io) like markdown support implemented as a NPM package.
 
-This packages imported core features from [esarea](https://github.com/fukayatsu/esarea).
+This package imported core features from [esarea](https://github.com/fukayatsu/esarea) and is rewritten with TypeScript.
 
 ## Setup
 
 ```bash
 npm install
-npn run build
+npm run build
+npm run dev # for development
 ```
