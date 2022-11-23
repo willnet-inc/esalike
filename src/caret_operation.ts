@@ -16,7 +16,6 @@ const getCaretInfo = function (element: HTMLTextAreaElement) {
     }
 
     if (!element.value) {
-        /* no value or empty string */
         return res
     }
 
@@ -32,17 +31,11 @@ const getCaretInfo = function (element: HTMLTextAreaElement) {
 }
 
 export const CaretOperation = {
-    /**
-     * get caret position
-     */
     getPos: function (element: HTMLTextAreaElement) {
         const tmp = getCaretInfo(element)
         return { start: tmp.start, end: tmp.end }
     },
 
-    /**
-     * set caret position
-     */
     setPos: function (
         element: HTMLTextAreaElement,
         toRange: SelectionRange,
@@ -62,20 +55,10 @@ export const CaretOperation = {
         }
     },
 
-    /**
-     * get selected text
-     */
     getText: function (element: HTMLTextAreaElement) {
         return getCaretInfo(element).text
     },
 
-    /**
-     * replace selected text
-     *
-     * @param   {Element}   element         target element
-     * @param   {String}    text            replacement text
-     * @param   {String}    caret           caret mode: any of the following: "keep" | "start" | "end"
-     */
     replace: function (
         element: HTMLTextAreaElement,
         text: string,
@@ -94,9 +77,6 @@ export const CaretOperation = {
         this.setPos(element, range, caret)
     },
 
-    /**
-     * insert before the selected text
-     */
     insertBefore: function (
         element: HTMLTextAreaElement,
         text: string,
@@ -119,9 +99,6 @@ export const CaretOperation = {
         this.setPos(element, range, caret)
     },
 
-    /**
-     * insert after the selected text
-     */
     insertAfter: function (
         element: HTMLTextAreaElement,
         text: string,
