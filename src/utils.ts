@@ -56,12 +56,23 @@ export const replaceText = function (target: HTMLTextAreaElement, str: string) {
     const fromIdx = pos.start
     const toIdx = pos.end
 
+    const useExecCommand = true
+
     if (str === '') return
 
     target.focus()
     target.selectionStart = fromIdx
     target.selectionEnd = toIdx
-    const startText = target.value.slice(0, fromIdx)
-    const endText = target.value.slice(toIdx)
-    target.value = startText + str + endText
+
+    if (useExecCommand) {
+        try {
+            document.execCommand('insertText', false, str)
+        } catch (error) {
+            console.debug(error)
+        }
+    } else {
+        const startText = target.value.slice(0, fromIdx)
+        const endText = target.value.slice(toIdx)
+        target.value = startText + str + endText
+    }
 }
