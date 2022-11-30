@@ -50,13 +50,10 @@ export const getPrevLine = function (e: KeyboardEvent) {
     }
 }
 
-// @see https://mimemo.io/m/mqLXOlJe7ozQ19r
 export const replaceText = function (target: HTMLTextAreaElement, str: string) {
     const pos = CaretOperation.getPos(target)
     const fromIdx = pos.start
     const toIdx = pos.end
-
-    const useExecCommand = true
 
     if (str === '') return
 
@@ -64,13 +61,16 @@ export const replaceText = function (target: HTMLTextAreaElement, str: string) {
     target.selectionStart = fromIdx
     target.selectionEnd = toIdx
 
-    if (useExecCommand) {
-        try {
-            document.execCommand('insertText', false, str)
-        } catch (error) {
-            console.debug(error)
-        }
-    } else {
+    // execCommand('insertText') is a deprecated API, but apparently it is
+    // the only way to support undo / redo for text set in JS.
+    //
+    // execCommand('insertText') has been supported by Firefox since 89.
+    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1220696
+
+    if (!document.execCommand('insertText', false, str)) {
+        // It should not happen because most browsers support execCommand('insertText').
+        // But just in case, we use the fallback.
+        // See https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand for more details.
         const startText = target.value.slice(0, fromIdx)
         const endText = target.value.slice(toIdx)
         target.value = startText + str + endText
