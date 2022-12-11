@@ -1,6 +1,6 @@
-import { handleEnterKey } from "./handlers/enter";
-import { handleSpaceKey } from "./handlers/space";
-import { handleTabKey } from "./handlers/tab";
+import { handleEnterKey } from './handlers/enter';
+import { handleSpaceKey } from './handlers/space';
+import { handleTabKey } from './handlers/tab';
 
 let esareaDetected = false;
 
@@ -26,13 +26,13 @@ export const KeyDownHandler = function (
 
   const key = e.key.toLowerCase();
 
-  if (key === "tab") {
+  if (key === 'tab') {
     handleTabKey(e);
-  } else if (key === "enter") {
+  } else if (key === 'enter') {
     handleEnterKey(e);
   } else if (
     // FIXME: Strangely `e.key === ' '`  does not work.
-    e.code === "Space" &&
+    e.code === 'Space' &&
     e.shiftKey &&
     e.altKey
   ) {

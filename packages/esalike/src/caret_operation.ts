@@ -6,11 +6,11 @@ type SelectionRange = {
   end: number;
 };
 
-type Caret = "keep" | "start" | "end";
+type Caret = 'keep' | 'start' | 'end';
 
 const getCaretInfo = function (element: HTMLTextAreaElement) {
   const res = {
-    text: "",
+    text: '',
     start: 0,
     end: 0,
   };
@@ -39,11 +39,11 @@ export const CaretOperation = {
   setPos: function (
     element: HTMLTextAreaElement,
     toRange: SelectionRange,
-    caret: Caret = "keep"
+    caret: Caret = 'keep'
   ) {
-    if (caret === "start") {
+    if (caret === 'start') {
       toRange.end = toRange.start;
-    } else if (caret === "end") {
+    } else if (caret === 'end') {
       toRange.start = toRange.end;
     }
 

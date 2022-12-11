@@ -1,5 +1,5 @@
-import { CaretOperation } from "../caret_operation";
-import { getCurrentLine, replaceText } from "../utils";
+import { CaretOperation } from '../caret_operation';
+import { getCurrentLine, replaceText } from '../utils';
 
 export const handleSpaceKey = function (e: KeyboardEvent) {
   if (e.target === null) return;
@@ -15,7 +15,7 @@ export const handleSpaceKey = function (e: KeyboardEvent) {
 
   if (match) {
     e.preventDefault();
-    const checkMark = match[3] === " " ? "x" : " ";
+    const checkMark = match[3] === ' ' ? 'x' : ' ';
     const replaceTo = `${match[1]}${match[2]} [${checkMark}] ${match[4]}`;
     CaretOperation.setPos(target, {
       start: currentLine.start,
@@ -26,6 +26,6 @@ export const handleSpaceKey = function (e: KeyboardEvent) {
       start: currentLine.caret,
       end: currentLine.caret,
     });
-    document.dispatchEvent(new Event("input"));
+    document.dispatchEvent(new Event('input'));
   }
 };

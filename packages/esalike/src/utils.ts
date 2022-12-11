@@ -1,4 +1,4 @@
-import { CaretOperation } from "./caret_operation";
+import { CaretOperation } from './caret_operation';
 
 export const getCurrentLine = function (e: KeyboardEvent) {
   if (e.target === null) return;
@@ -14,8 +14,8 @@ export const getCurrentLine = function (e: KeyboardEvent) {
     return null;
   }
 
-  const startPos = text.lastIndexOf("\n", pos.start - 1) + 1;
-  let endPos = text.indexOf("\n", pos.start);
+  const startPos = text.lastIndexOf('\n', pos.start - 1) + 1;
+  let endPos = text.indexOf('\n', pos.start);
   if (endPos === -1) {
     endPos = text.length;
   }
@@ -35,13 +35,13 @@ export const getPrevLine = function (e: KeyboardEvent) {
 
   const currentLine = getCurrentLine(e);
 
-  if (currentLine === null || typeof currentLine === "undefined") {
+  if (currentLine === null || typeof currentLine === 'undefined') {
     return null;
   }
 
   const text = target.value.slice(0, currentLine.start);
 
-  const startPos = text.lastIndexOf("\n", currentLine.start - 2) + 1;
+  const startPos = text.lastIndexOf('\n', currentLine.start - 2) + 1;
   const endPos = currentLine.start;
   return {
     text: text.slice(startPos, endPos),
@@ -55,7 +55,7 @@ export const replaceText = function (target: HTMLTextAreaElement, str: string) {
   const fromIdx = pos.start;
   const toIdx = pos.end;
 
-  if (str === "") return;
+  if (str === '') return;
 
   target.focus();
   target.selectionStart = fromIdx;
@@ -67,7 +67,7 @@ export const replaceText = function (target: HTMLTextAreaElement, str: string) {
   // execCommand('insertText') has been supported by Firefox since 89.
   // See https://bugzilla.mozilla.org/show_bug.cgi?id=1220696
 
-  if (!document.execCommand("insertText", false, str)) {
+  if (!document.execCommand('insertText', false, str)) {
     // It should not happen because most browsers support execCommand('insertText').
     // But just in case, we use the fallback.
     // See https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand for more details.

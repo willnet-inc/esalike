@@ -1,5 +1,5 @@
-import { CaretOperation } from "../caret_operation";
-import { getCurrentLine, replaceText, getPrevLine } from "../utils";
+import { CaretOperation } from '../caret_operation';
+import { getCurrentLine, replaceText, getPrevLine } from '../utils';
 
 const RegExpList = {
   listMarker: /^(\s*(?:-|\+|\*|\d+\.) )/,
@@ -37,7 +37,7 @@ export const handleEnterKey = function (e: KeyboardEvent) {
       return;
     }
     e.preventDefault();
-    let listMark = match[1].replace(/\[x\]/, "[ ]");
+    let listMark = match[1].replace(/\[x\]/, '[ ]');
     if ((listMarkMatch = listMark.match(/^(\s*)(\d+)\./))) {
       const indent = listMarkMatch[1];
       const num = parseInt(listMarkMatch[2]);
@@ -45,7 +45,7 @@ export const handleEnterKey = function (e: KeyboardEvent) {
         listMark = listMark.replace(/\s*\d+/, `${indent}${num + 1}`);
       }
     }
-    replaceText(target, "\n" + listMark);
+    replaceText(target, '\n' + listMark);
     const caretTo = currentLine.caret + listMark.length + 1;
     CaretOperation.setPos(target, { start: caretTo, end: caretTo });
   } else if (currentLine.text.match(RegExpList.listMarker)) {
@@ -74,25 +74,25 @@ export const handleEnterKey = function (e: KeyboardEvent) {
     }
 
     for (match of Array.from(m)) {
-      row.push("|");
+      row.push('|');
     }
     const prevLine = getPrevLine(e);
     if (
       !prevLine ||
       (!currentLine.text.match(/---/) && !prevLine.text.match(/\|/g))
     ) {
-      replaceText(target, "\n" + row.join(" --- ") + "\n" + row.join("  "));
+      replaceText(target, '\n' + row.join(' --- ') + '\n' + row.join('  '));
       CaretOperation.setPos(target, {
         start: currentLine.caret + 6 * row.length - 1,
         end: currentLine.caret + 6 * row.length - 1,
       });
     } else {
-      replaceText(target, "\n" + row.join("  "));
+      replaceText(target, '\n' + row.join('  '));
       CaretOperation.setPos(target, {
         start: currentLine.caret + 3,
         end: currentLine.caret + 3,
       });
     }
   }
-  document.dispatchEvent(new Event("input"));
+  document.dispatchEvent(new Event('input'));
 };

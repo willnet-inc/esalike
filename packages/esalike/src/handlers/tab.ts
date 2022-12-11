@@ -1,5 +1,5 @@
-import { CaretOperation } from "../caret_operation";
-import { getCurrentLine, replaceText } from "../utils";
+import { CaretOperation } from '../caret_operation';
+import { getCurrentLine, replaceText } from '../utils';
 
 export const handleTabKey = function (e: KeyboardEvent) {
   if (e.target === null) return;
@@ -22,9 +22,9 @@ export const handleTabKey = function (e: KeyboardEvent) {
   }
 
   if (e.shiftKey) {
-    if (currentLine && currentLine.text.charAt(0) === "|") {
+    if (currentLine && currentLine.text.charAt(0) === '|') {
       // prev cell in table
-      newPos = text.lastIndexOf("|", pos.start - 1);
+      newPos = text.lastIndexOf('|', pos.start - 1);
       if (newPos > 1) {
         newPos -= 1;
       }
@@ -32,7 +32,7 @@ export const handleTabKey = function (e: KeyboardEvent) {
     } else {
       // re indent
       const currentText = CaretOperation.getText(target);
-      const reindentedText = currentText.replace(/^ {1,4}/gm, "");
+      const reindentedText = currentText.replace(/^ {1,4}/gm, '');
       const reindentedCount = currentText.length - reindentedText.length;
 
       replaceText(target, reindentedText);
@@ -50,10 +50,10 @@ export const handleTabKey = function (e: KeyboardEvent) {
       }
     }
   } else {
-    if (currentLine && currentLine.text.charAt(0) === "|") {
+    if (currentLine && currentLine.text.charAt(0) === '|') {
       // next cell in table
-      newPos = text.indexOf("|", pos.start + 1);
-      if (newPos < 0 || newPos === text.lastIndexOf("|", currentLine.end - 1)) {
+      newPos = text.indexOf('|', pos.start + 1);
+      if (newPos < 0 || newPos === text.lastIndexOf('|', currentLine.end - 1)) {
         CaretOperation.setPos(target, {
           start: currentLine.end,
           end: currentLine.end,
@@ -67,7 +67,7 @@ export const handleTabKey = function (e: KeyboardEvent) {
     } else {
       // indent
       const indentedText =
-        "    " + CaretOperation.getText(target).split("\n").join("\n    ");
+        '    ' + CaretOperation.getText(target).split('\n').join('\n    ');
       replaceText(target, indentedText);
       if (currentLine) {
         CaretOperation.setPos(target, {
@@ -82,5 +82,5 @@ export const handleTabKey = function (e: KeyboardEvent) {
       }
     }
   }
-  document.dispatchEvent(new Event("input"));
+  document.dispatchEvent(new Event('input'));
 };

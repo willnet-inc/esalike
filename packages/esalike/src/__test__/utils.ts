@@ -1,6 +1,6 @@
-import { ApplyMarkdownInputAssist } from "../index";
+import { ApplyMarkdownInputAssist } from '../index';
 
-const editorTestId = "editor";
+const editorTestId = 'editor';
 
 export const setUpTextArea = (): HTMLTextAreaElement => {
   const editorElement = document.querySelector(
@@ -12,7 +12,7 @@ export const setUpTextArea = (): HTMLTextAreaElement => {
     return editorElement;
   }
 
-  const newEditor = document.createElement("textarea") as HTMLTextAreaElement;
+  const newEditor = document.createElement('textarea') as HTMLTextAreaElement;
 
   newEditor.dataset.testid = editorTestId;
   document.body.appendChild(newEditor);

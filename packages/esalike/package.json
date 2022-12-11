@@ -8,7 +8,7 @@
     "build": "tsup src/index.ts --format cjs --dts",
     "dev": "npm run build --watch",
     "lint": "eslint 'src/**'",
-    "lint:fix": "eslint --fix 'src/**'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,js}'",
     "prepublishOnly": "npm run build",
     "test": "jest"
   },

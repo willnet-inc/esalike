@@ -1,11 +1,3 @@
-// module.exports = {
-//   extends: ["next", "turbo", "prettier"],
-//   rules: {
-//     "@next/next/no-html-link-for-pages": "off",
-//     "react/jsx-key": "off",
-//   },
-// };
-
 module.exports = {
   env: {
     browser: true,
@@ -17,6 +9,7 @@ module.exports = {
     'eslint-config-prettier',
     'turbo'
   ],
+  ignorePatterns: ['dist/**/*.js'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'eslint-plugin-prettier'],
   root: true,

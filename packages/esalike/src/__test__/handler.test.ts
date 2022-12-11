@@ -1,19 +1,19 @@
-import userEvent from "@testing-library/user-event";
-import { setUpTextArea } from "./utils";
-import { handleEnterKey } from "../handlers/enter";
-import { handleSpaceKey } from "../handlers/space";
-import { handleTabKey } from "../handlers/tab";
+import userEvent from '@testing-library/user-event';
+import { setUpTextArea } from './utils';
+import { handleEnterKey } from '../handlers/enter';
+import { handleSpaceKey } from '../handlers/space';
+import { handleTabKey } from '../handlers/tab';
 
-jest.mock("../handlers/enter");
-jest.mock("../handlers/space");
-jest.mock("../handlers/tab");
+jest.mock('../handlers/enter');
+jest.mock('../handlers/space');
+jest.mock('../handlers/tab');
 
-describe("ApplyMarkdownInputAssist", () => {
+describe('ApplyMarkdownInputAssist', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  test("Should watch enter key events", async () => {
+  test('Should watch enter key events', async () => {
     const textarea = setUpTextArea();
     const user = userEvent.setup();
 
@@ -35,7 +35,7 @@ describe("ApplyMarkdownInputAssist", () => {
     expect(handleSpaceKey).toBeCalledTimes(0);
   });
 
-  test("Should watch tab key events", async () => {
+  test('Should watch tab key events', async () => {
     const textarea = setUpTextArea();
     const user = userEvent.setup();
 
@@ -59,7 +59,7 @@ describe("ApplyMarkdownInputAssist", () => {
   });
 
   // FIXME: Sending shift + alt + space doesn't work with userEvent
-  test.skip("Should watch shift + alt + space key events", async () => {
+  test.skip('Should watch shift + alt + space key events', async () => {
     const textarea = setUpTextArea();
     const user = userEvent.setup();
 
@@ -69,7 +69,7 @@ describe("ApplyMarkdownInputAssist", () => {
     expect(handleTabKey).not.toBeCalled();
     expect(handleSpaceKey).not.toBeCalled();
 
-    await user.type(textarea, "{Shift}{Alt}{Space}{/Alt}{/Shift}");
+    await user.type(textarea, '{Shift}{Alt}{Space}{/Alt}{/Shift}');
     // await user.type(textarea, '[Shift][Alt][Space][/Alt][/Shift]')
 
     expect(handleEnterKey).toBeCalledTimes(0);
