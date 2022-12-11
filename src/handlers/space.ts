@@ -4,20 +4,16 @@ import { getCurrentLine, replaceText } from '../utils'
 export const handleSpaceKey = function (e: KeyboardEvent) {
     if (e.target === null) return
 
-    const target = e.target as HTMLTextAreaElement
+    const currentLine = getCurrentLine(e)
 
-    let currentLine, match
-    if (!e.shiftKey || !e.altKey) {
-        return
-    }
-    if (!(currentLine = getCurrentLine(e))) {
-        return
-    }
-    if (
-        (match = currentLine.text.match(
-            /^(\s*)(-|\+|\*|\d+\.) (?:\[(x| )\] )(.*)/
-        ))
-    ) {
+    if (!currentLine) return
+
+    const target = e.target as HTMLTextAreaElement
+    const match = currentLine.text.match(
+        /^(\s*)(-|\+|\*|\d+\.) (?:\[(x| )\] )(.*)/
+    )
+
+    if (match) {
         e.preventDefault()
         const checkMark = match[3] === ' ' ? 'x' : ' '
         const replaceTo = `${match[1]}${match[2]} [${checkMark}] ${match[4]}`

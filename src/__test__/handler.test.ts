@@ -57,4 +57,23 @@ describe('ApplyMarkdownInputAssist', () => {
         expect(handleTabKey).toBeCalledTimes(1)
         expect(handleSpaceKey).toBeCalledTimes(0)
     })
+
+    // FIXME: Sending shift + alt + space doesn't work with userEvent
+    test.skip('Should watch shift + alt + space key events', async () => {
+        const textarea = setUpTextArea()
+        const user = userEvent.setup()
+
+        textarea.focus()
+
+        expect(handleEnterKey).not.toBeCalled()
+        expect(handleTabKey).not.toBeCalled()
+        expect(handleSpaceKey).not.toBeCalled()
+
+        await user.type(textarea, '{Shift}{Alt}{Space}{/Alt}{/Shift}')
+        // await user.type(textarea, '[Shift][Alt][Space][/Alt][/Shift]')
+
+        expect(handleEnterKey).toBeCalledTimes(0)
+        expect(handleTabKey).toBeCalledTimes(0)
+        expect(handleSpaceKey).toBeCalledTimes(1)
+    })
 })

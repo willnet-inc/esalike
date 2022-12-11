@@ -24,15 +24,18 @@ export const KeyDownHandler = function (
     // because the tag insertion seems to be asynchronous.
     if (isEsareaInstalled()) return
 
-    switch (e.key) {
-        case 'Tab':
-            handleTabKey(e)
-            break
-        case 'Enter':
-            handleEnterKey(e)
-            break
-        case 'Space':
-            handleSpaceKey(e)
-            break
+    const key = e.key.toLowerCase()
+
+    if (key === 'tab') {
+        handleTabKey(e)
+    } else if (key === 'enter') {
+        handleEnterKey(e)
+    } else if (
+        // FIXME: Strangely `e.key === ' '`  does not work.
+        e.code === 'Space' &&
+        e.shiftKey &&
+        e.altKey
+    ) {
+        handleSpaceKey(e)
     }
 }
