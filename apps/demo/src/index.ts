@@ -1,9 +1,9 @@
 declare global {
-  var ESAREA: boolean;
+  const ESAREA: boolean;
 }
 
-import { ApplyMarkdownInputAssist } from "esalike";
+import { ApplyMarkdownInputAssist } from 'esalike';
 
-const editor = document.getElementById("editor") as HTMLTextAreaElement;
+const editor = document.getElementById('editor') as HTMLTextAreaElement;
 
 ApplyMarkdownInputAssist(editor);

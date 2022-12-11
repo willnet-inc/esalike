@@ -1,1 +1,4 @@
-export declare const KeyDownHandler: (this: HTMLTextAreaElement, e: KeyboardEvent) => void;
+export declare const KeyDownHandler: (
+  this: HTMLTextAreaElement,
+  e: KeyboardEvent
+) => void;

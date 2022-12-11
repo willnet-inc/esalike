@@ -1,1 +1,3 @@
-export declare const ApplyMarkdownInputAssist: (editor: HTMLTextAreaElement) => void;
+export declare const ApplyMarkdownInputAssist: (
+  editor: HTMLTextAreaElement
+) => void;

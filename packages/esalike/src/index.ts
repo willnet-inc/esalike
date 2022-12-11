@@ -1,7 +1,7 @@
-import { KeyDownHandler } from './handler'
+import { KeyDownHandler } from "./handler";
 
 export const ApplyMarkdownInputAssist = function (
-    editor: HTMLTextAreaElement
+  editor: HTMLTextAreaElement
 ): void {
-    editor.addEventListener('keydown', KeyDownHandler)
-}
+  editor.addEventListener("keydown", KeyDownHandler);
+};
