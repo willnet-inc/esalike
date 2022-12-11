@@ -1,14 +1,6 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": true,
-        "outDir": "./dist",
-        "strict": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "sourceMap": true
-    },
-    "include": ["src", "src/types", "tmp/jquery.selection.ts", "src/__test__"],
-    "exclude": ["node_modules", "**/__tests__/*", "tmp"]
+    "extends": "tsconfig/esalike.json",
+
+    "include": ["src", "src/__test__"],
+    "exclude": ["tmp"]
 }
