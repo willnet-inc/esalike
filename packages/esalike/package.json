@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "npm run build --watch",
     "lint": "eslint 'src/**'",
     "lint:fix": "eslint --fix 'src/**'",
     "prepublishOnly": "npm run build",
@@ -27,10 +27,10 @@
   },
   "homepage": "https://github.com/willnet-inc/esalike#readme",
   "devDependencies": {
-    "eslint-config-custom": "*",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.3",
+    "eslint-config-custom": "*",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
     "jest-puppeteer": "^6.1.1",
@@ -46,5 +46,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "tsup": "^6.5.0"
   }
 }
