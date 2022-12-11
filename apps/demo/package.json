@@ -5,10 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack -w",
+    "dev": "concurrently \"webpack -w\" \"npx serve\"",
     "lint": "eslint 'src/**'",
     "lint:fix": "eslint --fix 'src/**'",
-    "serve": "npx serve",
     "test": "jest",
     "test:serve": "npm run build && npx serve -l 3001"
   },
@@ -26,18 +25,19 @@
     "esalike": "*"
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
     "@types/expect-puppeteer": "^5.0.2",
     "@types/jest": "^29.2.4",
     "@types/jest-environment-puppeteer": "^5.0.3",
     "@types/puppeteer": "^7.0.4",
+    "concurrently": "^7.6.0",
+    "eslint-config-custom": "*",
     "jest": "^29.3.1",
     "jest-dev-server": "^6.1.1",
     "jest-puppeteer": "^6.1.1",
     "puppeteer": "^19.3.0",
-    "tsconfig": "*",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
+    "tsconfig": "*",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
   }
