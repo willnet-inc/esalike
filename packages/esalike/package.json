@@ -1,0 +1,50 @@
+{
+  "name": "esalike",
+  "version": "0.0.1",
+  "description": "An esalike markdown support implemented as a NPM package",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs --dts",
+    "dev": "npm run build --watch",
+    "lint": "eslint 'src/**'",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,js}'",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/willnet-inc/esalike.git"
+  },
+  "keywords": [
+    "esarea",
+    "markdown"
+  ],
+  "author": "Masatoshi Iwasaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willnet-inc/esalike/issues"
+  },
+  "homepage": "https://github.com/willnet-inc/esalike#readme",
+  "devDependencies": {
+    "@testing-library/dom": "^8.19.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.2.3",
+    "eslint-config-custom": "*",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.4.1",
+    "tsconfig": "*",
+    "typescript": "^4.9.3"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "tsup": "^6.5.0"
+  }
+}

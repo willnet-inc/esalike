@@ -1,0 +1,29 @@
+name: CI
+
+on: push
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Lint GitHub workflow
+        run: |
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          ./actionlint -shellcheck=
+
+      - uses: actions/setup-node@v3.5.1
+        with:
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test

@@ -1,0 +1,6 @@
+{
+    "extends": "tsconfig/esalike.json",
+
+    "include": ["src", "src/__test__"],
+    "exclude": ["tmp"]
+}

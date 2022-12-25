@@ -1,0 +1,43 @@
+{
+  "name": "esalike-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "concurrently \"webpack -w\" \"npx serve\"",
+    "lint": "eslint 'src/**'",
+    "lint:fix": "eslint --fix 'src/**'",
+    "test": "jest",
+    "test:serve": "npm run build && npx serve -l 3001"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/willnet-inc/esalike-demo.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willnet-inc/esalike-demo/issues"
+  },
+  "homepage": "https://github.com/willnet-inc/esalike-demo#readme",
+  "dependencies": {
+    "esalike": "*"
+  },
+  "devDependencies": {
+    "@types/expect-puppeteer": "^5.0.2",
+    "@types/jest": "^29.2.4",
+    "@types/jest-environment-puppeteer": "^5.0.3",
+    "concurrently": "^7.6.0",
+    "eslint-config-custom": "*",
+    "jest": "^29.3.1",
+    "jest-dev-server": "^6.1.1",
+    "jest-puppeteer": "^6.1.1",
+    "puppeteer": "^19.3.0",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.4.1",
+    "tsconfig": "*",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
