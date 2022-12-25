@@ -9,6 +9,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-22.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
 
@@ -18,9 +19,11 @@ jobs:
           ./actionlint -shellcheck=
 
       - uses: actions/setup-node@v3.5.1
+        with:
+          cache: npm
 
-      - run: npm install
+      - run: npm ci
 
-      - run: npm run build
       - run: npm run lint
-      - run: "xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test"
+      - run: npm run build
+      - run: npm run test
