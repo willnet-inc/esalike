@@ -23,4 +23,4 @@ jobs:
 
       - run: npm run build
       - run: npm run lint
-      - run: npm run test
+      - run: "xvfb-run --auto-servernum --server-args='-screen 0, 1600x900x24' npm run test"
