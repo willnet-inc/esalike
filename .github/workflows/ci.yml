@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  test:
+  prepare:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
@@ -23,7 +23,23 @@ jobs:
           cache: npm
 
       - run: npm ci
-
       - run: npm run lint
-      - run: npm run build
-      - run: npm run test
+
+  test:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [16, 18, 19]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Run tests
+        run: |
+          npm install
+          npm run build
+          npm test
