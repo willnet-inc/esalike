@@ -22,5 +22,6 @@
     "dev": {
       "cache": false
     }
-  }
+  },
+  "globalEnv": ["PUPPETEER_PRODUCT"]
 }
