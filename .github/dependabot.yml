@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/packages/esalike"
+    schedule:
+      interval: weekly
+      time: "20:00"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: npm
+    directory: "/packages/eslint-config-custom"
+    schedule:
+      interval: weekly
+      time: "20:00"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: npm
+    directory: "/apps/demo"
+    schedule:
+      interval: weekly
+      time: "20:00"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "20:00"
