@@ -1,3 +1,5 @@
+*** WARNING: esarea has problems with the usage of esarea ***
+
 # esalike
 
 An [esa.io](https://esa.io) like markdown input support provided as a NPM package.
