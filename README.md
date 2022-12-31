@@ -23,6 +23,10 @@ const editor = document.getElementById('YOUR_TEXTAREA_ID') as HTMLTextAreaElemen
 ApplyMarkdownInputAssist(editor);
 ```
 
+## Supported browsers
+
+The latest versions of Chrome and Firefox.
+
 ## Demo & Development
 
 You can try the demo app in this repo to see how esalike works.
