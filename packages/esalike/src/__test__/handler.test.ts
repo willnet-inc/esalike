@@ -13,6 +13,32 @@ describe('ApplyMarkdownInputAssist', () => {
     jest.resetAllMocks();
   });
 
+  afterEach(() => {
+    document.body.innerHTML = '';
+  })
+
+  test('Should not watch key events when esarea is not disabled', async () => {
+    const textarea = setUpTextArea({ esareaDisabled: false });
+    const user = userEvent.setup();
+
+    textarea.focus();
+
+    expect(handleEnterKey).not.toBeCalled();
+    expect(handleTabKey).not.toBeCalled();
+    expect(handleSpaceKey).not.toBeCalled();
+
+    await user.type(
+      textarea,
+      `
+        - foobar{enter}
+        `
+    );
+
+    expect(handleEnterKey).not.toBeCalled();
+    expect(handleTabKey).not.toBeCalled();
+    expect(handleSpaceKey).not.toBeCalled();
+  });
+
   test('Should watch enter key events', async () => {
     const textarea = setUpTextArea();
     const user = userEvent.setup();
