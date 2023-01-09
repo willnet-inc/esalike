@@ -10,7 +10,8 @@
     "lint": "eslint 'src/**'",
     "lint:fix": "eslint --fix 'src/**/*.{ts,js}'",
     "prepublishOnly": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
