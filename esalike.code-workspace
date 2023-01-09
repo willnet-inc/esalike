@@ -1,0 +1,30 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "esalike",
+      "path": "packages/esalike"
+    },
+    {
+      "name": "demo",
+      "path": "apps/demo"
+    }
+  ],
+  "settings": {
+    "jest.autoRun": "off",
+    "jest.disabledWorkspaceFolders": [
+      "root"
+    ],
+    "jest.shell": "/bin/zsh",
+    "jest.jestCommandLine": "source ~/.zshrc && npm run test -",
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "orta.vscode-jest",
+    ],
+  }
+}
