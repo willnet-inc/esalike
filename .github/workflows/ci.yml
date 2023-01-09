@@ -18,7 +18,7 @@ jobs:
           bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
           ./actionlint -shellcheck=
 
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@v3.6.0
         with:
           cache: npm
 
@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.version }}
 
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.5.1
+      - uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.version }}
 
