@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="HandheldFriendly" content="True" />
+  <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+  <title>esarea test page</title>
+</head>
+
+<body>
+  <h1>Test page for esarea</h1>
+
+  <h2>Textarea with data-esarea-disabled="true"</h2>
+
+  <ul>
+    <li>When you are using esarea &lt;= 0.0.20, you will see strange behaviors due to the conflict between esarea and esalike.</li>
+    <li>When you are using esarea &gt; 0.0.20 or any version which ignores textarea with 'data-esarea-disabled="true"', only esalike should properly work.</li>
+  </ul>
+
+  <div width="1024px">
+    <textarea id="editor" cols="150" rows="20" data-esarea-disabled="true"></textarea>
+  </div>
+
+  <h2>Textarea without data-esarea-disabled="true"</h2>
+
+  <ul>
+    <li>
+      Any version of esarea should work because esalike will not be applied for textarea elements those don't have the 'data-esarea-disabled="true"' attribute.
+    </li>
+  </ul>
+
+  <div width="1024px">
+    <textarea id="editor" cols="150" rows="20"></textarea>
+  </div>
+</body>
+
+<script type="module" src="./dist/main.js"></script>
+
+</html>
