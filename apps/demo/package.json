@@ -31,7 +31,7 @@
     "concurrently": "^7.6.0",
     "eslint-config-custom": "*",
     "jest": "^29.3.1",
-    "jest-dev-server": "^6.1.1",
+    "jest-dev-server": "^7.0.0",
     "jest-puppeteer": "^6.1.1",
     "puppeteer": "^19.3.0",
     "ts-jest": "^29.0.3",
