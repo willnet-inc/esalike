@@ -1,7 +1,6 @@
 {
   "name": "esalike",
   "version": "0.1.0",
-  "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -15,7 +14,7 @@
     "test:watch": "turbo run test:watch",
     "test:packages": "turbo run test --filter=./packages",
     "test:apps": "turbo run test --filter=./apps",
-    "publish": "turbo run publish --filter=./packages/esa-like"
+    "publish-packages": "turbo run build lint test --filter=./packages/esa-like && changeset version && changeset publish"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
