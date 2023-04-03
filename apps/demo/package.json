@@ -30,7 +30,7 @@
     "@types/expect-puppeteer": "^5.0.2",
     "@types/jest": "^29.2.4",
     "@types/jest-environment-puppeteer": "^5.0.3",
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.0.1",
     "eslint-config-custom": "*",
     "jest": "^29.3.1",
     "jest-dev-server": "^8.0.2",
