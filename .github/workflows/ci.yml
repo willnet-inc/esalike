@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Lint GitHub workflow
         run: |
@@ -34,7 +34,7 @@ jobs:
         version: [16, 18, 19]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3.7.0
         with:
           node-version: ${{ matrix.version }}
@@ -55,7 +55,7 @@ jobs:
         puppeteer_product: [chrome, firefox]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3.7.0
         with:
           node-version: ${{ matrix.version }}
