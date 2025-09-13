@@ -10,6 +10,7 @@ const RegExpList = {
 
 export const handleEnterKey = function (e: KeyboardEvent) {
   if (e.target === null) return;
+  if (e.isComposing) return;
 
   const target = e.target as HTMLTextAreaElement;
 
