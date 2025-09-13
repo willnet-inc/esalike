@@ -52,7 +52,6 @@ jobs:
       fail-fast: false
       matrix:
         version: [18, 20, 22]
-        puppeteer_product: [chrome, firefox]
 
     steps:
       - uses: actions/checkout@v5
@@ -65,5 +64,3 @@ jobs:
           npm install
           npm run build
           npm run test:apps
-        env:
-            PUPPETEER_PRODUCT: ${{ matrix.puppeteer_product }}

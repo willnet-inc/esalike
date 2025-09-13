@@ -1,10 +1,12 @@
-const product = process.env.PUPPETEER_PRODUCT || 'chrome'
-
 module.exports = {
   launch: {
-    dumpio: true,
-    headless: true,
-    product
+    headless: 'new',
+    product: 'chrome',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage'
+    ]
   },
   server: {
     command: 'npm run test:serve',
