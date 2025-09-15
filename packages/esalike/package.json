@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/willnet-inc/esalike#readme",
   "devDependencies": {
-    "@testing-library/dom": "^9.0.0",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.3",
     "eslint-config-custom": "*",
