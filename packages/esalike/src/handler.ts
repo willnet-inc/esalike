@@ -2,27 +2,16 @@ import { handleEnterKey } from './handlers/enter';
 import { handleSpaceKey } from './handlers/space';
 import { handleTabKey } from './handlers/tab';
 
-let esareaDetected = false;
-
-const isEsareaInstalled = (): boolean => {
-  if (esareaDetected) return true;
-
-  const meta = document.querySelector('meta[name="esarea"]');
-
-  if (meta) {
-    esareaDetected = true;
-  }
-
-  return esareaDetected;
-};
 
 export const KeyDownHandler = function (
   this: HTMLTextAreaElement,
   e: KeyboardEvent
 ): void {
-  // Check a meta tag inserted by esarea in this handler
-  // because the tag insertion seems to be asynchronous.
-  if (isEsareaInstalled()) return;
+  // textarea inputs should have`data-esarea-disabled=true` to prevent conflicts with esarea.
+  //
+  // As it seems that the load timing of Chrome extension seems asynchronous,
+  // both esalike and esarea should watch this attribute.
+  if (this.dataset.esareaDisabled !== 'true') return
 
   const key = e.key.toLowerCase();
 
