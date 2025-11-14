@@ -120,22 +120,81 @@ describe('Test the assist for list', () => {
   it('should handle Japanese text in lists correctly', async () => {
     // Type Japanese text in a list item
     await page.type('#editor', '- これは日本語のテストです');
-    
+
     // Press Enter to create new list item
     await page.keyboard.press('Enter');
-    
+
     // Verify new list item was created with Japanese content preserved
     const valueAfterFirstEnter = await page.$eval('#editor', (el) => (el as HTMLTextAreaElement).value);
     expect(valueAfterFirstEnter).toBe('- これは日本語のテストです\n- ');
 
     // Add more Japanese text to the new list item
     await page.type('#editor', '２番目のアイテム');
-    
+
     // Press Enter again
     await page.keyboard.press('Enter');
-    
+
     // Verify both Japanese list items exist
     const finalValueJapanese = await page.$eval('#editor', (el) => (el as HTMLTextAreaElement).value);
     expect(finalValueJapanese).toBe('- これは日本語のテストです\n- ２番目のアイテム\n- ');
+  });
+
+  it('should NOT indent when Tab is pressed during IME composition', async () => {
+    // Set initial text
+    await page.evaluate(() => {
+      const editor = document.querySelector('#editor') as HTMLTextAreaElement;
+      editor.value = '- テスト';
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+    });
+
+    await page.focus('#editor');
+
+    // Simulate composition start (IME begins)
+    await page.evaluate(() => {
+      const editor = document.querySelector('#editor') as HTMLTextAreaElement;
+      const compositionStartEvent = new CompositionEvent('compositionstart', {
+        data: '',
+        bubbles: true,
+        cancelable: true
+      });
+      editor.dispatchEvent(compositionStartEvent);
+    });
+
+    // Press Tab during composition (should not indent)
+    await page.evaluate(() => {
+      const editor = document.querySelector('#editor') as HTMLTextAreaElement;
+      const tabEvent = new KeyboardEvent('keydown', {
+        key: 'Tab',
+        code: 'Tab',
+        bubbles: true,
+        cancelable: true
+      });
+      // Override isComposing property
+      Object.defineProperty(tabEvent, 'isComposing', {
+        value: true,
+        writable: false
+      });
+      editor.dispatchEvent(tabEvent);
+    });
+
+    // Verify no indentation was added
+    const valueAfterTab = await page.$eval('#editor', (el) => (el as HTMLTextAreaElement).value);
+    expect(valueAfterTab).toBe('- テスト');
+
+    // End composition (IME confirms input)
+    await page.evaluate(() => {
+      const editor = document.querySelector('#editor') as HTMLTextAreaElement;
+      const compositionEndEvent = new CompositionEvent('compositionend', {
+        data: '',
+        bubbles: true,
+        cancelable: true
+      });
+      editor.dispatchEvent(compositionEndEvent);
+    });
+
+    // Now verify normal Tab key behavior works after composition ends
+    await page.keyboard.press('Tab');
+    const finalValue = await page.$eval('#editor', (el) => (el as HTMLTextAreaElement).value);
+    expect(finalValue).toBe('    - テスト');
   });
 });

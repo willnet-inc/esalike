@@ -24,6 +24,9 @@ export const KeyDownHandler = function (
   // because the tag insertion seems to be asynchronous.
   if (isEsareaInstalled()) return;
 
+  // Skip processing if IME is composing
+  if (e.isComposing) return;
+
   const key = e.key.toLowerCase();
 
   if (key === 'tab') {
